@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/pages/Home.vue'
-import Scenery from '@/pages/Scenery.vue'
+import Home from '@/pages/Home'
+import Scenery from '@/pages/Scenery'
 
 const routes = [
   {

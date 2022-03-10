@@ -102,12 +102,12 @@ export default {
         duration: 0.3
       }, '>')
       gsap.to(brush.value, {
-        xPercent: 180,
-        yPercent: 70,
+        xPercent: 170,
+        yPercent: 60,
         duration: 0.3
       }, '<')
       gsap.to(brush.value, {
-        yPercent: 265,
+        yPercent: 255,
         duration: 1
       }, '>')
       gsap.to(right.value, {
@@ -180,7 +180,7 @@ export default {
       gsap.to(doorFrame.value, {
         rotateY: -45,
         transformOrigin: 'right',
-        duration: 2,
+        duration: 0.7,
         onComplete () {
           doorFrame.value.style.pointerEvents = 'none'
         }
@@ -188,7 +188,7 @@ export default {
       gsap.to(dooor.value, {
         scaleX: 1.2,
         transformOrigin: 'right',
-        duration: 2
+        duration: 0.7
       }, '<')
     }
     const goToDoor = () => {
@@ -220,7 +220,8 @@ export default {
         top: '25%'
       })
       gsap.set(top.value, {
-        scaleX: 0
+        scaleX: 0,
+        yPercent: -3
       })
       gsap.set(right.value, {
         scaleY: 0
