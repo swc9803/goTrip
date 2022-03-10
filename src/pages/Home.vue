@@ -1,7 +1,14 @@
 <template>
-  <div class="container">
-    <p>따분한 집콕 생활 지겹지 않으세요?</p>
-    <Brush class="draw" />
+  <div class="container" ref="mainContainer">
+    <transition name="textFade">
+      <p v-show="pData">따분한 집콕 생활 지겨우신가요?</p>
+    </transition>
+    <svg ref="appear" class="appear" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 411 403">
+      <path fill="#FAFF00" d="m346.33 46.8 16.55 16.55-92.54 92.55-16.56-16.55zM48.95 63.35 65.5 46.8l92.55 92.54-16.56 16.56zM194.19.51h23.41v130.88h-23.41zM194.19 272.12h23.41V403h-23.41zM253.78 263.4l16.55-16.55 92.55 92.54-16.55 16.56zM280.12 217.32V193.9H411v23.4zM0 217.32V193.9h130.88v23.4zM141.5 246.85l16.55 16.56-92.55 92.54-16.55-16.55z"/>
+    </svg>
+    <Brush v-show="brushData" class="draw"
+      @scaleDoor="scaleDoor"
+    />
     <div ref="restitution" />
   </div>
 </template>
@@ -10,13 +17,48 @@
 import Brush from '@/components/Brush'
 import Matter from 'matter-js'
 import { onMounted, ref } from 'vue'
+import gsap from 'gsap'
+import { CustomEase } from 'gsap/CustomEase'
+gsap.registerPlugin(CustomEase)
 export default {
   components: {
     Brush
   },
   setup () {
+    const pData = ref(false)
+    const brushData = ref(false)
     const restitution = ref()
+    const mainContainer = ref()
+    const appear = ref()
+
+    const scaleDoor = () => {
+      gsap.to(mainContainer.value, {
+        scale: 10,
+        transformOrigin: '66% 47%',
+        ease: CustomEase.create('custom', 'M0,0,C0.5,0,0.836,0.047,0.88,0.073,0.975,0.13,0.9,0.23,1,1'),
+        duration: 5
+      })
+    }
     onMounted(() => {
+      gsap.set(appear.value, {
+        scale: 3,
+        left: '55.7%',
+        top: '13%',
+        opacity: 0
+      })
+      setTimeout(() => {
+        pData.value = true
+        setTimeout(() => {
+          pData.value = false
+        }, 2000)
+      }, 4000)
+      setTimeout(() => {
+        brushData.value = true
+        gsap.fromTo(appear.value, { opacity: 1 }, {
+          scale: 5,
+          opacity: 0
+        })
+      }, 7500)
       var Engine = Matter.Engine
       var Render = Matter.Render
       var Runner = Matter.Runner
@@ -83,36 +125,47 @@ export default {
       })
     })
     return {
-      restitution
+      pData,
+      brushData,
+      appear,
+      restitution,
+      mainContainer,
+      scaleDoor
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/style/MainStyle';
+
 .container {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
   background: #14151f;
+  .appear {
+    position: absolute;
+    pointer-events: none;
+    height: 10%;
+    z-index: 2;
+  }
   p {
     position: absolute;
+    transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
-    text-align: center;
-    word-break: keep-all;
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-size: 4rem;
     color: white;
   }
-  div {
-    height: 100vh;
-  }
 }
-.draw {
-  display: none;
+.textFade-enter-from,
+.textFade-leave-to {
+  opacity: 0;
+}
+.textFade-enter-active,
+.textFade-leave-active {
+  transition: 1s ease
 }
 </style>
