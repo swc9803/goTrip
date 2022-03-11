@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="sceneryContainer">
     <div class="clip" ref="clip" />
     <div class="scrollEl" ref="scrollEl" />
     <svg class="sun" ref="sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 1020 1020">
@@ -81,9 +81,7 @@
         </clipPath>
       </defs>
     </svg>
-  </div>
-  <div>
-    hi
+    <p ref="sceneryText">여행을 떠나보세요</p>
   </div>
 </template>
 
@@ -104,9 +102,10 @@ export default {
     const leftMountain2 = ref()
     const secondTrees = ref()
     const firstTrees = ref()
+    const sceneryText = ref()
     onMounted(() => {
       // 해 트렌지션
-      gsap.to(clip.value, { scale: 0.02, transformOrigin: 'center', duration: 3 })
+      gsap.to(clip.value, { scale: 0.02, transformOrigin: 'center', delay: 1, duration: 3 })
       gsap.to(clip.value, { opacity: 0, duration: 0.2 }, '>')
       gsap.to(clip.value, { display: 'none', duration: 0 }, '>')
       // 햇빛 애니메이션
@@ -119,22 +118,26 @@ export default {
       gsap.from(rightMountain2.value, { xPercent: 30, yPercent: 20, opacity: 0, duration: 2 }, '<')
       gsap.from(leftMountain1.value, { xPercent: -40, yPercent: 20, opacity: 0, duration: 2 }, '<')
       gsap.from(leftMountain2.value, { xPercent: -30, yPercent: 20, opacity: 0, duration: 2 }, '<')
+      gsap.to(sceneryText.value, { yPercent: -50, opacity: 1 }, '>')
 
-      const sceneryAni = gsap.timeline()
-      ScrollTrigger.create({
-        animation: sceneryAni,
-        trigger: scrollEl.value,
-        start: '1% top',
-        end: '100% 100%',
-        scrub: 2
-      })
-      sceneryAni.to(sun.value, { yPercent: -50, opacity: 0 })
-      sceneryAni.to(firstTrees.value, { scale: 2, transformOrigin: 'center', opacity: 0 }, '<')
-      sceneryAni.to(secondTrees.value, { yPercent: 200, scale: 2, transformOrigin: 'center', opacity: 0 }, '<')
-      sceneryAni.to(rightMountain1.value, { xPercent: 50, yPercent: 20, opacity: 0 }, '<')
-      sceneryAni.to(rightMountain2.value, { xPercent: 30, yPercent: 20, opacity: 0 }, '<')
-      sceneryAni.to(leftMountain1.value, { xPercent: -40, yPercent: 20, opacity: 0 }, '<')
-      sceneryAni.to(leftMountain2.value, { xPercent: -30, yPercent: 20, opacity: 0 }, '<')
+      setTimeout(() => {
+        const sceneryAni = gsap.timeline()
+        ScrollTrigger.create({
+          animation: sceneryAni,
+          trigger: scrollEl.value,
+          start: '1% top',
+          end: '100% 100%',
+          scrub: 2
+        })
+        sceneryAni.to(sun.value, { yPercent: -50, opacity: 0 })
+        sceneryAni.to(sceneryText.value, { yPercent: -50, opacity: 0 })
+        sceneryAni.to(firstTrees.value, { scale: 2, transformOrigin: 'center', opacity: 0 }, '<')
+        sceneryAni.to(secondTrees.value, { yPercent: 200, scale: 2, transformOrigin: 'center', opacity: 0 }, '<')
+        sceneryAni.to(rightMountain1.value, { xPercent: 50, yPercent: 20, opacity: 0 }, '<')
+        sceneryAni.to(rightMountain2.value, { xPercent: 30, yPercent: 20, opacity: 0 }, '<')
+        sceneryAni.to(leftMountain1.value, { xPercent: -40, yPercent: 20, opacity: 0 }, '<')
+        sceneryAni.to(leftMountain2.value, { xPercent: -30, yPercent: 20, opacity: 0 }, '<')
+      }, 3000)
     })
 
     return {
@@ -147,7 +150,8 @@ export default {
       leftMountain1,
       leftMountain2,
       secondTrees,
-      firstTrees
+      firstTrees,
+      sceneryText
     }
   }
 }
@@ -155,11 +159,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/MainStyle';
-.container {
+.sceneryContainer {
   position: relative;
   width: 100%;
   height: 100vh;
   background: linear-gradient(to top, #FFFFFF, #6DD5FA, #2980B9);
+  svg {
+    position: fixed;
+  }
   .clip {
     position: absolute;
     transform: translate(-50%, -48.4%);
@@ -178,14 +185,20 @@ export default {
     opacity: 0;
   }
   .sun {
-    position: absolute;
     transform: translate(-50%, -30%);
     left: 50%;
     height: 40%;
   }
   .sceneryWrap {
-    position: absolute;
     bottom: 0;
+  }
+  p {
+    position: fixed;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    font-size: 4rem;
+    opacity: 0;
   }
 }
 </style>
