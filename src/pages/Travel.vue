@@ -1,19 +1,18 @@
 <template>
   <Scenery />
   <div class="contents">
-    dd
+    <Card />
   </div>
 </template>
 
 <script>
 import Scenery from '@/components/Scenery'
-import gsap from 'gsap'
+import Card from '@/components/Card'
 import { onMounted } from 'vue'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-gsap.registerPlugin(ScrollTrigger)
 export default {
   components: {
-    Scenery
+    Scenery,
+    Card
   },
   setup () {
     onMounted(() => {

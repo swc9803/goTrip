@@ -131,7 +131,7 @@ export default {
       })
       setTimeout(() => {
         router.push({
-          name: 'Scenery'
+          name: 'Travel'
         })
       }, 5000)
     }
