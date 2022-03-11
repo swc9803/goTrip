@@ -58,7 +58,7 @@ export default {
           transformOrigin: 'bottom',
           duration: 1
         })
-      }, 1500)
+      }, 3500)
       gsap.to(arrow.value, {
         yPercent: 20,
         ease: 'none',

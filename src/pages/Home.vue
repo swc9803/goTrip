@@ -30,14 +30,22 @@ export default {
     const restitution = ref()
     const mainContainer = ref()
     const appear = ref()
-
     const scaleDoor = () => {
-      gsap.to(mainContainer.value, {
-        scale: 10,
-        transformOrigin: '66% 47%',
-        ease: CustomEase.create('custom', 'M0,0,C0.5,0,0.836,0.047,0.88,0.073,0.975,0.13,0.9,0.23,1,1'),
-        duration: 5
-      })
+      if (matchMedia('(max-width: 850px)').matches) {
+        gsap.to(mainContainer.value, {
+          scale: 10,
+          transformOrigin: '66% 47%',
+          ease: CustomEase.create('custom', 'M0,0,C0.5,0,0.836,0.047,0.88,0.073,0.975,0.13,0.9,0.23,1,1'),
+          duration: 5
+        })
+      } else {
+        gsap.to(mainContainer.value, {
+          scale: 15,
+          transformOrigin: '61% 47%',
+          ease: CustomEase.create('custom', 'M0,0,C0.5,0,0.836,0.047,0.88,0.073,0.975,0.13,0.9,0.23,1,1'),
+          duration: 5
+        })
+      }
     }
     onMounted(() => {
       gsap.set(appear.value, {
@@ -158,6 +166,7 @@ export default {
     left: 50%;
     font-size: 4rem;
     color: white;
+    pointer-events: none;
   }
 }
 .textFade-enter-from,

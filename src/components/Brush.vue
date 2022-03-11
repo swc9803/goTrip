@@ -8,7 +8,7 @@
       <path @click="goToDoor" class="clickDoor" ref="clickDoor" fill="#FFF06B" d="M117 111h779v1514H117z"/>
     </svg>
 
-    <svg @click="open" class="open" ref="doorFrame" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 973 1696">
+    <svg class="open" ref="doorFrame" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 973 1696">
       <path ref="openDoor" fill="#14151F" d="M97 104h784v1489H97z"/>
       <circle ref="handle" cx="261.5" cy="847.5" r="52.5" fill="#fff"/>
       <path ref="dooor" fill="#5A6100" d="M25 104h73v1489H25z"/>
@@ -69,114 +69,42 @@ import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 export default {
   setup (props, { emit }) {
-    const router = useRouter()
-    const brush = ref()
-    const door = ref()
-    const top = ref()
-    const right = ref()
-    const bottom = ref()
-    const left = ref()
-    const openDoor = ref()
-    const handle = ref()
-    const dooor = ref()
-    const doorFrame = ref()
-    const clickDoor = ref()
+    const router = useRouter(); const brush = ref(); const door = ref()
+    const top = ref(); const right = ref(); const bottom = ref()
+    const left = ref(); const openDoor = ref(); const handle = ref()
+    const dooor = ref(); const doorFrame = ref(); const clickDoor = ref()
 
     const drawing = () => {
       brush.value.style.pointerEvents = 'none'
       doorFrame.value.style.opacity = 1
       door.value.style.opacity = 1
-      gsap.set([top.value, right.value, bottom.value, left.value], {
-        opacity: 1
-      })
-      gsap.to(brush.value, {
-        xPercent: 160,
-        duration: 1
-      })
-      gsap.to(top.value, {
-        scaleX: 1,
-        duration: 1
-      }, '<')
-      gsap.to(brush.value, {
-        rotate: 90,
-        duration: 0.3
-      }, '>')
-      gsap.to(brush.value, {
-        xPercent: 170,
-        yPercent: 60,
-        duration: 0.3
-      }, '<')
-      gsap.to(brush.value, {
-        yPercent: 255,
-        duration: 1
-      }, '>')
-      gsap.to(right.value, {
-        scaleY: 1,
-        duration: 1
-      }, '<')
-      gsap.to(brush.value, {
-        rotate: 180,
-        duration: 0.3
-      }, '>')
-      gsap.to(brush.value, {
-        xPercent: 80,
-        yPercent: 270,
-        duration: 0.3
-      }, '<')
-      gsap.to(brush.value, {
-        xPercent: -78,
-        duration: 1
-      }, '>')
-      gsap.from(bottom.value, {
-        scaleX: 0,
-        transformOrigin: 'right',
-        duration: 1
-      }, '<')
-      gsap.to(brush.value, {
-        rotate: 0,
-        duration: 0.3
-      }, '>')
-      gsap.to(brush.value, {
-        xPercent: 0,
-        yPercent: 190,
-        duration: 0.3
-      }, '<')
-      gsap.to(brush.value, {
-        yPercent: 0,
-        duration: 1
-      }, '>')
-      gsap.from(left.value, {
-        scaleY: 0,
-        transformOrigin: 'bottom',
-        duration: 1
-      }, '<')
-      gsap.to(brush.value, {
-        xPercent: 40,
-        yPercent: 95,
-        duration: 1
-      }, '>')
-      gsap.to(handle.value, {
-        opacity: 1,
-        duration: 0.2
-      }, '>')
-      gsap.to(brush.value, {
-        xPercent: 150,
-        yPercent: -80,
-        opacity: 0,
-        duration: 1
-      }, '>')
+      gsap.set([top.value, right.value, bottom.value, left.value], { opacity: 1 })
+      gsap.to(brush.value, { xPercent: 160, duration: 1 })
+      gsap.to(top.value, { scaleX: 1, duration: 1 }, '<')
+      gsap.to(brush.value, { rotate: 90, duration: 0.3 }, '>')
+      gsap.to(brush.value, { xPercent: 170, yPercent: 60, duration: 0.3 }, '<')
+      gsap.to(brush.value, { yPercent: 255, duration: 1 }, '>')
+      gsap.to(right.value, { scaleY: 1, duration: 1 }, '<')
+      gsap.to(brush.value, { rotate: 180, duration: 0.3 }, '>')
+      gsap.to(brush.value, { xPercent: 80, yPercent: 270, duration: 0.3 }, '<')
+      gsap.to(brush.value, { xPercent: -78, duration: 1 }, '>')
+      gsap.from(bottom.value, { scaleX: 0, transformOrigin: 'right', duration: 1 }, '<')
+      gsap.to(brush.value, { rotate: 0, duration: 0.3 }, '>')
+      gsap.to(brush.value, { xPercent: 0, yPercent: 190, duration: 0.3 }, '<')
+      gsap.to(brush.value, { yPercent: 0, duration: 1 }, '>')
+      gsap.from(left.value, { scaleY: 0, transformOrigin: 'bottom', duration: 1 }, '<')
+      gsap.to(brush.value, { xPercent: 40, yPercent: 95, duration: 1 }, '>')
+      gsap.to(handle.value, { opacity: 1, duration: 0.2 }, '>')
+      gsap.to(brush.value, { xPercent: 150, yPercent: -80, opacity: 0, duration: 1 }, '>')
       gsap.to(openDoor.value, {
         fill: '#353900',
         duration: 1,
         onComplete () {
-          doorFrame.value.style.pointerEvents = 'auto'
           setTimeout(() => {
             clickDoor.value.style.pointerEvents = 'auto'
-          }, 2000)
+          }, 1000)
         }
       }, '>')
-    }
-    const open = () => {
       gsap.to(doorFrame.value, {
         rotateY: -45,
         transformOrigin: 'right',
@@ -184,13 +112,14 @@ export default {
         onComplete () {
           doorFrame.value.style.pointerEvents = 'none'
         }
-      })
+      }, '>')
       gsap.to(dooor.value, {
         scaleX: 1.2,
         transformOrigin: 'right',
         duration: 0.7
       }, '<')
     }
+
     const goToDoor = () => {
       emit('scaleDoor')
       clickDoor.value.style.pointerEvents = 'none'
@@ -206,33 +135,15 @@ export default {
         })
       }, 5000)
     }
+
     onMounted(() => {
-      gsap.set(brush.value, {
-        left: '54.5%',
-        top: '8%'
-      })
-      gsap.set(door.value, {
-        left: '55%',
-        top: '25%'
-      })
-      gsap.set(doorFrame.value, {
-        left: '55%',
-        top: '25%'
-      })
-      gsap.set(top.value, {
-        scaleX: 0,
-        yPercent: -3
-      })
-      gsap.set(right.value, {
-        scaleY: 0
-      })
-      gsap.set([bottom.value, left.value, handle.value], {
-        opacity: 0
-      })
-      gsap.set(dooor.value, {
-        scaleX: 0,
-        xPercent: 100
-      })
+      gsap.set(brush.value, { left: '54.5%', top: '8%' })
+      gsap.set(door.value, { left: '55%', top: '25%' })
+      gsap.set(doorFrame.value, { left: '55%', top: '25%' })
+      gsap.set(top.value, { scaleX: 0, yPercent: -3 })
+      gsap.set(right.value, { scaleY: 0 })
+      gsap.set([bottom.value, left.value, handle.value], { opacity: 0 })
+      gsap.set(dooor.value, { scaleX: 0, xPercent: 100 })
     })
     return {
       brush,
@@ -247,7 +158,6 @@ export default {
       clickDoor,
       dooor,
       drawing,
-      open,
       goToDoor
     }
   }
