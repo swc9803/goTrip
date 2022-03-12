@@ -147,9 +147,9 @@ export default {
       ScrollTrigger.create({
         animation: sceneryTextAni,
         trigger: scroll.value,
-        start: '1% top',
-        end: '100% 100%',
-        scrub: 2
+        start: '20% top',
+        end: '80% 100%',
+        scrub: 3
       })
       items.forEach(item => {
         const length = item.getTotalLength()
