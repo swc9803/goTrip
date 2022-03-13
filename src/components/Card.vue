@@ -1,18 +1,20 @@
 <template>
   <div>
-    <!-- <div ref="cardScrollEl" class="ScrollEl" /> -->
     <div ref="cardScrollEl" class="cardWrap">
       <div class="cardFlex">
-        <div v-for="card in firstCards" :key="card.id" class="card" :ref="cardFirstRef">
+        <div v-for="card in topCards" :key="card.id" class="card" :ref="cardTopRef">
+          <div class="front" />
           <img :src="card.pictureUrl">
         </div>
       </div>
       <div class="cardFlex">
-        <div v-for="card in secondCards" :key="card.id" class="card" :ref="cardSecondRef">
+        <div v-for="card in bottomCards" :key="card.id" class="card" :ref="cardBottomRef">
+          <div class="front" />
           <img :src="card.pictureUrl">
         </div>
       </div>
     </div>
+    <!-- 배열 2개 딜러가 카드 나눠주듯 rotate주면서 날아가기 -->
   </div>
 </template>
 
@@ -24,62 +26,71 @@ gsap.registerPlugin(ScrollTrigger)
 export default {
   setup () {
     const cardScrollEl = ref()
-    const cardFirstArray = ref([])
-    const cardFirstRef = (el) => cardFirstArray.value.push(el)
-    const firstCards = ref(
+    const cardTopArray = ref([])
+    const cardTopRef = (el) => cardTopArray.value.push(el)
+    const topCards = ref(
       [
+        { pictureUrl: require('@/assets/dd.png') },
+        { pictureUrl: require('@/assets/dd.png') },
+        { pictureUrl: require('@/assets/dd.png') },
         { pictureUrl: require('@/assets/dd.png') },
         { pictureUrl: require('@/assets/dd.png') },
         { pictureUrl: require('@/assets/dd.png') }
       ])
-    const cardSecondArray = ref([])
-    const cardSecondRef = (el) => cardSecondArray.value.push(el)
-    const secondCards = ref(
+    const cardBottomArray = ref([])
+    const cardBottomRef = (el) => cardBottomArray.value.push(el)
+    const bottomCards = ref(
       [
-        { pictureUrl: require('@/assets/ss.png') },
-        { pictureUrl: require('@/assets/ss.png') },
-        { pictureUrl: require('@/assets/ss.png') }
+        { pictureUrl: require('@/assets/dd.png') },
+        { pictureUrl: require('@/assets/dd.png') },
+        { pictureUrl: require('@/assets/dd.png') },
+        { pictureUrl: require('@/assets/dd.png') },
+        { pictureUrl: require('@/assets/dd.png') },
+        { pictureUrl: require('@/assets/dd.png') }
       ])
     onMounted(() => {
-      gsap.set([cardFirstArray.value, cardSecondArray.value], {
-        xPercent: -100,
-        yPercent: -100,
-        opacity: 0,
-        scale: 0.5
-      })
-
+      const h = innerHeight / 2.5
       const cardStagger = gsap.timeline()
       ScrollTrigger.create({
         animation: cardStagger,
         trigger: cardScrollEl.value,
-        start: '-20% top'
+        start: '-40% top'
       })
-      cardStagger.to(cardFirstArray.value, {
-        xPercent: 0,
-        yPercent: 0,
-        opacity: 1,
-        scale: 1,
-        stagger: 0.5,
-        duration: 0.5
+      cardStagger.to(cardTopArray.value, {
+        rotate: 180,
+        xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+        yPercent: h,
+        stagger: 0.7
       })
-      cardStagger.to(cardSecondArray.value, {
-        xPercent: 0,
-        yPercent: 0,
-        opacity: 1,
-        scale: 1,
-        stagger: 0.5,
-        duration: 0.5,
-        delay: 0.25
+      cardStagger.to(cardBottomArray.value, {
+        rotate: 180,
+        xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+        yPercent: -h,
+        stagger: 0.7,
+        delay: 0.35
       }, '<')
+      cardStagger.to([cardTopArray.value, cardBottomArray.value], {
+        delay: 1,
+        rotateY: -180,
+        zIndex: 0,
+        duration: 0.7,
+        onStart () {
+          gsap.to('.front', {
+            duration: 0.7,
+            rotateY: -180,
+            zIndex: 0
+          })
+        }
+      }, '>')
     })
     return {
       cardScrollEl,
-      cardFirstArray,
-      cardFirstRef,
-      firstCards,
-      cardSecondArray,
-      cardSecondRef,
-      secondCards
+      cardTopArray,
+      cardTopRef,
+      topCards,
+      cardBottomArray,
+      cardBottomRef,
+      bottomCards
     }
   }
 }
@@ -87,59 +98,38 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/MainStyle';
+$count: 6;
+$randomColor: rgb(random(255),random(255),random(255));
+
 div {
   .cardWrap {
     position: relative;
-    transform: translate(-50%);
-    left: 50%;
-    max-width: 60rem;
-    display: flex;
-    justify-content: space-around;
+    height: 80vh;
     .cardFlex {
+      display: flex;
+      justify-content: center;
+      perspective: 3000px;
       .card {
-        width: 340px;
-        height: 255px;
-        margin: 2px;
+        position: absolute;
+        width: 8vw;
+        height: 6vw;
         overflow: hidden;
-        img {
+        .front {
+          position: absolute;
           width: 100%;
-          height: 230px;
-          overflow: hidden;
-          object-fit: cover;
-          border-radius: 1rem;
+          height: 100%;
+          $random-color: rgb(random(255),random(255),random(255));
+          background: linear-gradient(45deg, $random-color 50%, darken($random-color, 40%) 140%);
+          z-index: 1;
+        }
+        img {
+          position: absolute;
+          width: 100%;
+          height: 100%;
         }
       }
     }
   }
 }
-@media screen and (max-width: 900px) {
-  div {
-    .cardWrap {
-      .cardFlex {
-        .card {
-          width: 200px;
-          height: 150px;
-          img {
-            height: 130px;
-          }
-        }
-      }
-    }
-  }
-}
-@media screen and (max-width: 480px) {
-  div {
-    .cardWrap {
-      .cardFlex {
-        .card {
-          width: 140px;
-          height: 105px;
-          img {
-            height: 90px;
-          }
-        }
-      }
-    }
-  }
-}
+
 </style>
