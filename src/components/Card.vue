@@ -2,19 +2,24 @@
   <div>
     <div ref="cardScrollEl" class="cardWrap">
       <div class="cardFlex">
-        <div v-for="card in topCards" :key="card.id" class="card" :ref="cardTopRef">
+        <div v-for="card in topCards" :key="card.id"
+          @click="focusTopPhoto(card.id)"
+          class="card" :ref="cardTopRef"
+        >
           <div class="front" />
           <img :src="card.pictureUrl">
         </div>
       </div>
       <div class="cardFlex">
-        <div v-for="card in bottomCards" :key="card.id" class="card" :ref="cardBottomRef">
+        <div v-for="card in bottomCards" :key="card.id"
+          @click="focusBottomPhoto(card.id)"
+          class="card" :ref="cardBottomRef"
+        >
           <div class="front" />
           <img :src="card.pictureUrl">
         </div>
       </div>
     </div>
-    <!-- 배열 2개 딜러가 카드 나눠주듯 rotate주면서 날아가기 -->
   </div>
 </template>
 
@@ -25,47 +30,47 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 export default {
   setup () {
+    const h = innerHeight / 2.5
     const cardScrollEl = ref()
     const cardTopArray = ref([])
     const cardTopRef = (el) => cardTopArray.value.push(el)
     const topCards = ref(
       [
-        { pictureUrl: require('@/assets/dd.png') },
-        { pictureUrl: require('@/assets/dd.png') },
-        { pictureUrl: require('@/assets/dd.png') },
-        { pictureUrl: require('@/assets/dd.png') },
-        { pictureUrl: require('@/assets/dd.png') },
-        { pictureUrl: require('@/assets/dd.png') }
+        { pictureUrl: require('@/assets/dd.png'), id: 1 },
+        { pictureUrl: require('@/assets/dd.png'), id: 2 },
+        { pictureUrl: require('@/assets/dd.png'), id: 3 },
+        { pictureUrl: require('@/assets/dd.png'), id: 4 },
+        { pictureUrl: require('@/assets/dd.png'), id: 5 },
+        { pictureUrl: require('@/assets/dd.png'), id: 6 }
       ])
     const cardBottomArray = ref([])
     const cardBottomRef = (el) => cardBottomArray.value.push(el)
     const bottomCards = ref(
       [
-        { pictureUrl: require('@/assets/dd.png') },
-        { pictureUrl: require('@/assets/dd.png') },
-        { pictureUrl: require('@/assets/dd.png') },
-        { pictureUrl: require('@/assets/dd.png') },
-        { pictureUrl: require('@/assets/dd.png') },
-        { pictureUrl: require('@/assets/dd.png') }
+        { pictureUrl: require('@/assets/dd.png'), id: 1 },
+        { pictureUrl: require('@/assets/dd.png'), id: 2 },
+        { pictureUrl: require('@/assets/dd.png'), id: 3 },
+        { pictureUrl: require('@/assets/dd.png'), id: 4 },
+        { pictureUrl: require('@/assets/dd.png'), id: 5 },
+        { pictureUrl: require('@/assets/dd.png'), id: 6 }
       ])
     onMounted(() => {
-      const h = innerHeight / 2.5
       const cardStagger = gsap.timeline()
       ScrollTrigger.create({
         animation: cardStagger,
         trigger: cardScrollEl.value,
-        start: '-40% top'
+        start: '-70% top'
       })
       cardStagger.to(cardTopArray.value, {
         rotate: 180,
         xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
-        yPercent: h,
+        yPercent: -h,
         stagger: 0.7
       })
       cardStagger.to(cardBottomArray.value, {
         rotate: 180,
         xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
-        yPercent: -h,
+        yPercent: h,
         stagger: 0.7,
         delay: 0.35
       }, '<')
@@ -80,9 +85,41 @@ export default {
             rotateY: -180,
             zIndex: 0
           })
+        },
+        onComplete () {
+          cardScrollEl.value.style.pointerEvents = 'auto'
         }
       }, '>')
     })
+    const focusTopPhoto = (cardId) => {
+      // if (cardId - 1의 yPercent가 0이 아니면 실행 ) {}
+      gsap.to(cardTopArray.value, {
+        xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+        yPercent: -h
+      })
+      gsap.to(cardBottomArray.value, {
+        xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+        yPercent: h
+      })
+      gsap.to(cardTopArray.value[cardId - 1], {
+        xPercent: 0,
+        yPercent: 0
+      })
+    }
+    const focusBottomPhoto = (cardId) => {
+      gsap.to(cardTopArray.value, {
+        xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+        yPercent: -h
+      })
+      gsap.to(cardBottomArray.value, {
+        xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+        yPercent: h
+      })
+      gsap.to(cardBottomArray.value[cardId - 1], {
+        xPercent: 0,
+        yPercent: 0
+      })
+    }
     return {
       cardScrollEl,
       cardTopArray,
@@ -90,7 +127,9 @@ export default {
       topCards,
       cardBottomArray,
       cardBottomRef,
-      bottomCards
+      bottomCards,
+      focusTopPhoto,
+      focusBottomPhoto
     }
   }
 }
@@ -104,8 +143,11 @@ $randomColor: rgb(random(255),random(255),random(255));
 div {
   .cardWrap {
     position: relative;
+    top: 20%;
     height: 80vh;
+    pointer-events: none;
     .cardFlex {
+      position: relative;
       display: flex;
       justify-content: center;
       perspective: 3000px;
@@ -114,6 +156,7 @@ div {
         width: 8vw;
         height: 6vw;
         overflow: hidden;
+        border-radius: 1rem;
         .front {
           position: absolute;
           width: 100%;
@@ -126,6 +169,7 @@ div {
           position: absolute;
           width: 100%;
           height: 100%;
+          cursor: pointer;
         }
       }
     }

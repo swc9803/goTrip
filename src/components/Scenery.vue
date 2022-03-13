@@ -216,6 +216,7 @@ export default {
     opacity: 0;
   }
   .sun {
+    position: absolute;
     transform: translate(-50%, -30%);
     left: 50%;
     height: 40%;
