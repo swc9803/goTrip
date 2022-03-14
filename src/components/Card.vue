@@ -218,7 +218,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/MainStyle';
 $count: 6;
-$randomColor: rgb(random(255),random(255),random(255));
 
 div {
   .cardWrap {
@@ -230,19 +229,24 @@ div {
       position: relative;
       display: flex;
       justify-content: center;
-      perspective: 3000px;
+      perspective: 600px;
       .card {
         position: absolute;
         width: 9vw;
         height: 6vw;
         overflow: hidden;
         border-radius: 0.5rem;
+        @for $i from 1 through $count {
+          &:nth-child(#{$i}) {
+            .front {
+              background: linear-gradient(45deg, rgb(random(255),random(255),random(255)) 50%, lighten(rgb(random(255),random(255),random(255)), 30%) 140%);
+            }
+          }
+        }
         .front {
           position: absolute;
           width: 100%;
           height: 100%;
-          $random-color: rgb(random(255),random(255),random(255));
-          background: linear-gradient(45deg, $random-color 50%, darken($random-color, 40%) 140%);
           z-index: 1;
         }
         img {
