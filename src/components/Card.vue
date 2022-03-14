@@ -66,13 +66,13 @@ export default {
           rotate: 180,
           xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
           yPercent: -h / 1.2,
-          stagger: 0.7
+          stagger: -0.7
         })
         cardStagger.to(cardBottomArray.value, {
           rotate: 180,
           xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
           yPercent: h / 1.2,
-          stagger: 0.7,
+          stagger: -0.7,
           delay: 0.35
         }, '<')
         cardStagger.to([cardTopArray.value, cardBottomArray.value], {
@@ -102,13 +102,13 @@ export default {
           rotate: 180,
           xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
           yPercent: -h / 3,
-          stagger: 0.7
+          stagger: -0.7
         })
         cardStagger.to(cardBottomArray.value, {
           rotate: 180,
           xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
           yPercent: h / 3,
-          stagger: 0.7,
+          stagger: -0.7,
           delay: 0.35
         }, '<')
         cardStagger.to([cardTopArray.value, cardBottomArray.value], {
@@ -217,7 +217,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/MainStyle';
-$count: 6;
+$imgCount: 6;
 
 div {
   .cardWrap {
@@ -230,19 +230,26 @@ div {
       display: flex;
       justify-content: center;
       perspective: 600px;
+      @for $j from 1 through 2 {
+        &:nth-child(#{$j}) {
+          .card {
+            @for $i from 1 through $imgCount {
+              &:nth-child(#{$i}) {
+                .front {
+                  background: linear-gradient(45deg, rgb(random(255),random(255),random(255)) 50%, lighten(rgb(random(255),random(255),random(255)), 30%) 140%);
+                }
+              }
+            }
+          }
+        }
+      }
       .card {
         position: absolute;
         width: 9vw;
         height: 6vw;
         overflow: hidden;
         border-radius: 0.5rem;
-        @for $i from 1 through $count {
-          &:nth-child(#{$i}) {
-            .front {
-              background: linear-gradient(45deg, rgb(random(255),random(255),random(255)) 50%, lighten(rgb(random(255),random(255),random(255)), 30%) 140%);
-            }
-          }
-        }
+
         .front {
           position: absolute;
           width: 100%;
@@ -251,14 +258,13 @@ div {
         }
         img {
           position: absolute;
+          display: block;
           transform: translate(-50%, -50%);
           top: 50%;
           left: 50%;
           width: 100%;
           cursor: pointer;
           object-fit: cover;
-          // vertical-align: bottom;
-          display: block;
         }
       }
     }
