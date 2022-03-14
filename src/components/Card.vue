@@ -30,7 +30,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 export default {
   setup () {
-    const h = innerHeight / 2.5
+    const h = innerHeight
     const cardScrollEl = ref()
     const cardTopArray = ref([])
     const cardTopRef = (el) => cardTopArray.value.push(el)
@@ -55,70 +55,150 @@ export default {
         { pictureUrl: require('@/assets/dd.png'), id: 6 }
       ])
     onMounted(() => {
-      const cardStagger = gsap.timeline()
-      ScrollTrigger.create({
-        animation: cardStagger,
-        trigger: cardScrollEl.value,
-        start: '-70% top'
-      })
-      cardStagger.to(cardTopArray.value, {
-        rotate: 180,
-        xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
-        yPercent: -h,
-        stagger: 0.7
-      })
-      cardStagger.to(cardBottomArray.value, {
-        rotate: 180,
-        xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
-        yPercent: h,
-        stagger: 0.7,
-        delay: 0.35
-      }, '<')
-      cardStagger.to([cardTopArray.value, cardBottomArray.value], {
-        delay: 1,
-        rotateY: -180,
-        zIndex: 0,
-        duration: 0.7,
-        onStart () {
-          gsap.to('.front', {
-            duration: 0.7,
-            rotateY: -180,
-            zIndex: 0
-          })
-        },
-        onComplete () {
-          cardScrollEl.value.style.pointerEvents = 'auto'
-        }
-      }, '>')
+      if (matchMedia('(max-width: 850px)').matches) {
+        const cardStagger = gsap.timeline()
+        ScrollTrigger.create({
+          animation: cardStagger,
+          trigger: cardScrollEl.value,
+          start: '-70% top'
+        })
+        cardStagger.to(cardTopArray.value, {
+          rotate: 180,
+          xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+          yPercent: -h / 1.2,
+          stagger: 0.7
+        })
+        cardStagger.to(cardBottomArray.value, {
+          rotate: 180,
+          xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+          yPercent: h / 1.2,
+          stagger: 0.7,
+          delay: 0.35
+        }, '<')
+        cardStagger.to([cardTopArray.value, cardBottomArray.value], {
+          delay: 1,
+          rotateY: -180,
+          zIndex: 0,
+          duration: 0.7,
+          onStart () {
+            gsap.to('.front', {
+              duration: 0.7,
+              rotateY: -180,
+              zIndex: 0
+            })
+          },
+          onComplete () {
+            cardScrollEl.value.style.pointerEvents = 'auto'
+          }
+        }, '>')
+      } else {
+        const cardStagger = gsap.timeline()
+        ScrollTrigger.create({
+          animation: cardStagger,
+          trigger: cardScrollEl.value,
+          start: '-70% top'
+        })
+        cardStagger.to(cardTopArray.value, {
+          rotate: 180,
+          xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+          yPercent: -h / 3,
+          stagger: 0.7
+        })
+        cardStagger.to(cardBottomArray.value, {
+          rotate: 180,
+          xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+          yPercent: h / 3,
+          stagger: 0.7,
+          delay: 0.35
+        }, '<')
+        cardStagger.to([cardTopArray.value, cardBottomArray.value], {
+          delay: 1,
+          rotateY: -180,
+          zIndex: 0,
+          duration: 0.7,
+          onStart () {
+            gsap.to('.front', {
+              duration: 0.7,
+              rotateY: -180,
+              zIndex: 0
+            })
+          },
+          onComplete () {
+            cardScrollEl.value.style.pointerEvents = 'auto'
+          }
+        }, '>')
+      }
     })
     const focusTopPhoto = (cardId) => {
       // if (cardId - 1의 yPercent가 0이 아니면 실행 ) {}
-      gsap.to(cardTopArray.value, {
-        xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
-        yPercent: -h
-      })
-      gsap.to(cardBottomArray.value, {
-        xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
-        yPercent: h
-      })
-      gsap.to(cardTopArray.value[cardId - 1], {
-        xPercent: 0,
-        yPercent: 0
-      })
+      if (matchMedia('(max-width: 850px)').matches) {
+        gsap.to(cardTopArray.value, {
+          scale: 1,
+          xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+          yPercent: -h / 1.2
+        })
+        gsap.to(cardBottomArray.value, {
+          scale: 1,
+          xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+          yPercent: h / 1.2
+        })
+        gsap.to(cardTopArray.value[cardId - 1], {
+          scale: 8,
+          xPercent: 0,
+          yPercent: 0
+        })
+      } else {
+        gsap.to(cardTopArray.value, {
+          scale: 1,
+          xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+          yPercent: -h / 3
+        })
+        gsap.to(cardBottomArray.value, {
+          scale: 1,
+          xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+          yPercent: h / 3
+        })
+        gsap.to(cardTopArray.value[cardId - 1], {
+          scale: 5,
+          xPercent: 0,
+          yPercent: 0
+        })
+      }
     }
     const focusBottomPhoto = (cardId) => {
-      gsap.to(cardTopArray.value, {
-        xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
-        yPercent: -h
-      })
-      gsap.to(cardBottomArray.value, {
-        xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
-        yPercent: h
-      })
-      gsap.to(cardBottomArray.value[cardId - 1], {
-        xPercent: 0,
-        yPercent: 0
-      })
+      if (matchMedia('(max-width: 850px)').matches) {
+        gsap.to(cardTopArray.value, {
+          scale: 1,
+          xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+          yPercent: -h / 1.2
+        })
+        gsap.to(cardBottomArray.value, {
+          scale: 1,
+          xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+          yPercent: h / 1.2
+        })
+        gsap.to(cardBottomArray.value[cardId - 1], {
+          scale: 8,
+          xPercent: 0,
+          yPercent: 0
+        })
+      } else {
+        gsap.to(cardTopArray.value, {
+          scale: 1,
+          xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+          yPercent: -h / 3
+        })
+        gsap.to(cardBottomArray.value, {
+          scale: 1,
+          xPercent: gsap.utils.wrap([-350, -210, -70, 70, 210, 350]),
+          yPercent: h / 3
+        })
+        gsap.to(cardBottomArray.value[cardId - 1], {
+          scale: 5,
+          xPercent: 0,
+          yPercent: 0
+        })
+      }
     }
     return {
       cardScrollEl,
@@ -153,10 +233,10 @@ div {
       perspective: 3000px;
       .card {
         position: absolute;
-        width: 8vw;
+        width: 9vw;
         height: 6vw;
         overflow: hidden;
-        border-radius: 1rem;
+        border-radius: 0.5rem;
         .front {
           position: absolute;
           width: 100%;
@@ -167,13 +247,29 @@ div {
         }
         img {
           position: absolute;
+          transform: translate(-50%, -50%);
+          top: 50%;
+          left: 50%;
           width: 100%;
-          height: 100%;
           cursor: pointer;
+          object-fit: cover;
+          // vertical-align: bottom;
+          display: block;
         }
       }
     }
   }
 }
-
+@media screen and (max-width: 700px) {
+  div {
+    .cardWrap {
+      .cardFlex {
+        .card {
+          width: 12vw;
+          height: 9vw;
+        }
+      }
+    }
+  }
+}
 </style>
