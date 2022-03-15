@@ -8,14 +8,14 @@
 <script>
 import Scenery from '@/components/Scenery'
 import Card from '@/components/Card'
-import { onMounted } from 'vue'
+import { onBeforeMount } from 'vue'
 export default {
   components: {
     Scenery,
     Card
   },
   setup () {
-    onMounted(() => {
+    onBeforeMount(() => {
       scrollTo(0, 0)
     })
   }

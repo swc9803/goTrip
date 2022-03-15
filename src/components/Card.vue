@@ -245,8 +245,8 @@ div {
       }
       .card {
         position: absolute;
-        width: 9vw;
-        height: 6vw;
+        width: 10vw;
+        height: 6.6vw;
         overflow: hidden;
         border-radius: 0.5rem;
         .front {
@@ -275,7 +275,7 @@ div {
       .cardFlex {
         .card {
           width: 12vw;
-          height: 9vw;
+          height: 8vw;
         }
       }
     }

@@ -122,7 +122,15 @@ export default {
       gsap.from(rightMountain1.value, { xPercent: 50, yPercent: 20, opacity: 0, duration: 2 }, '<')
       gsap.from(rightMountain2.value, { xPercent: 30, yPercent: 20, opacity: 0, duration: 2 }, '<')
       gsap.from(leftMountain1.value, { xPercent: -40, yPercent: 20, opacity: 0, duration: 2 }, '<')
-      gsap.from(leftMountain2.value, { xPercent: -30, yPercent: 20, opacity: 0, duration: 2 }, '<')
+      gsap.from(leftMountain2.value, {
+        xPercent: -30,
+        yPercent: 20,
+        opacity: 0,
+        duration: 2,
+        onComplete () {
+          document.querySelector('body').style.overflow = 'visible'
+        }
+      }, '<')
 
       setTimeout(() => {
         const sceneryAni = gsap.timeline()
@@ -195,6 +203,7 @@ export default {
   width: 100%;
   height: 100vh;
   background: linear-gradient(to top, #FFFFFF, #6296e4, #2967b9);
+  overflow: hidden;
   svg {
     position: fixed;
   }
