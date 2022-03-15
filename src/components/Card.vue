@@ -36,23 +36,23 @@ export default {
     const cardTopRef = (el) => cardTopArray.value.push(el)
     const topCards = ref(
       [
-        { pictureUrl: require('@/assets/dd.png'), id: 1 },
-        { pictureUrl: require('@/assets/dd.png'), id: 2 },
-        { pictureUrl: require('@/assets/dd.png'), id: 3 },
-        { pictureUrl: require('@/assets/dd.png'), id: 4 },
-        { pictureUrl: require('@/assets/dd.png'), id: 5 },
-        { pictureUrl: require('@/assets/dd.png'), id: 6 }
+        { pictureUrl: require('@/assets/scenery01.jpg'), id: 1 },
+        { pictureUrl: require('@/assets/scenery02.jpg'), id: 2 },
+        { pictureUrl: require('@/assets/scenery03.jpg'), id: 3 },
+        { pictureUrl: require('@/assets/scenery04.jpg'), id: 4 },
+        { pictureUrl: require('@/assets/scenery05.jpg'), id: 5 },
+        { pictureUrl: require('@/assets/scenery06.jpg'), id: 6 }
       ])
     const cardBottomArray = ref([])
     const cardBottomRef = (el) => cardBottomArray.value.push(el)
     const bottomCards = ref(
       [
-        { pictureUrl: require('@/assets/dd.png'), id: 1 },
-        { pictureUrl: require('@/assets/dd.png'), id: 2 },
-        { pictureUrl: require('@/assets/dd.png'), id: 3 },
-        { pictureUrl: require('@/assets/dd.png'), id: 4 },
-        { pictureUrl: require('@/assets/dd.png'), id: 5 },
-        { pictureUrl: require('@/assets/dd.png'), id: 6 }
+        { pictureUrl: require('@/assets/scenery07.jpg'), id: 1 },
+        { pictureUrl: require('@/assets/scenery08.jpg'), id: 2 },
+        { pictureUrl: require('@/assets/scenery09.jpg'), id: 3 },
+        { pictureUrl: require('@/assets/scenery10.jpg'), id: 4 },
+        { pictureUrl: require('@/assets/scenery11.jpg'), id: 5 },
+        { pictureUrl: require('@/assets/scenery12.jpg'), id: 6 }
       ])
     onMounted(() => {
       if (matchMedia('(max-width: 850px)').matches) {
@@ -77,13 +77,13 @@ export default {
         }, '<')
         cardStagger.to([cardTopArray.value, cardBottomArray.value], {
           delay: 1,
-          rotateY: -180,
+          rotateX: -180,
           zIndex: 0,
           duration: 0.7,
           onStart () {
             gsap.to('.front', {
               duration: 0.7,
-              rotateY: -180,
+              rotateX: -180,
               zIndex: 0
             })
           },
@@ -113,13 +113,13 @@ export default {
         }, '<')
         cardStagger.to([cardTopArray.value, cardBottomArray.value], {
           delay: 1,
-          rotateY: -180,
+          rotateX: -180,
           zIndex: 0,
           duration: 0.7,
           onStart () {
             gsap.to('.front', {
               duration: 0.7,
-              rotateY: -180,
+              rotateX: -180,
               zIndex: 0
             })
           },
@@ -130,7 +130,6 @@ export default {
       }
     })
     const focusTopPhoto = (cardId) => {
-      // if (cardId - 1의 yPercent가 0이 아니면 실행 ) {}
       if (matchMedia('(max-width: 850px)').matches) {
         gsap.to(cardTopArray.value, {
           scale: 1,
@@ -227,6 +226,7 @@ div {
     pointer-events: none;
     .cardFlex {
       position: relative;
+      top: 50%;
       display: flex;
       justify-content: center;
       perspective: 600px;
@@ -249,7 +249,6 @@ div {
         height: 6vw;
         overflow: hidden;
         border-radius: 0.5rem;
-
         .front {
           position: absolute;
           width: 100%;
