@@ -60,7 +60,7 @@ export default {
         ScrollTrigger.create({
           animation: cardStagger,
           trigger: cardScrollEl.value,
-          start: '-70% top'
+          start: '-25% top'
         })
         cardStagger.to(cardTopArray.value, {
           rotate: 180,
@@ -96,7 +96,7 @@ export default {
         ScrollTrigger.create({
           animation: cardStagger,
           trigger: cardScrollEl.value,
-          start: '-70% top'
+          start: '-25% top'
         })
         cardStagger.to(cardTopArray.value, {
           rotate: 180,
@@ -229,7 +229,7 @@ div {
       top: 50%;
       display: flex;
       justify-content: center;
-      perspective: 600px;
+      // perspective: 3000px;
       @for $j from 1 through 2 {
         &:nth-child(#{$j}) {
           .card {
@@ -254,6 +254,7 @@ div {
           width: 100%;
           height: 100%;
           z-index: 1;
+          border-radius: 0.5rem;
         }
         img {
           position: absolute;
@@ -264,6 +265,9 @@ div {
           width: 100%;
           cursor: pointer;
           object-fit: cover;
+          image-rendering: -webkit-optimize-contrast !important;
+          backface-visibility: hidden;
+          border-radius: 0.5rem;
         }
       }
     }
